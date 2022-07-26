@@ -1,7 +1,7 @@
 import { deepMerge, canUseDom, bindFunctions } from '../src/utils/util'
 
 describe('the deepMerge function', () => {
-  test('merge numb, stri in one level', () => expect(
+  test('merge number and string values in one level', () => expect(
     deepMerge({ a: 1, b: 2 }, { a: '3', b: 4 })).toEqual({ a: '3', b: 4 })
   )
   test('replace str with arr', () => expect(
@@ -16,13 +16,13 @@ describe('the deepMerge function', () => {
   test('replace obj with obj', () => expect(
     deepMerge({ a: { b: 1 } }, { a: { b: '2' } })).toEqual({ a: { b: '2' } })
   )
-  test('replace arr with arr', () => expect(
+  test('replace array value with arr', () => expect(
     deepMerge({ a: [1] }, { a: { b: [2, 3] } })).toEqual({ a: { 0: 1, b: [2, 3] } })
   )
-  test('replace obj with num', () => expect(
+  test('replace object with number', () => expect(
     deepMerge({ a: 1 }, 2)).toEqual({ a: 1 })
   )
-  test('replace num with num', () => expect(
+  test('replace number with number', () => expect(
     deepMerge(1, 2)).toEqual({ })
   )
 
