@@ -45,6 +45,8 @@
   },
   "homepage": "https://github.com/guonanci/react-images-viewer#readme",
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
