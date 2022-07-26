@@ -17,7 +17,13 @@ module.exports = {
   },
   devtool: "inline-source-map",
   devServer: {
-    contentBase: path.resolve(__dirname, "examples/src"),
+    //contentBase: path.resolve(__dirname, "examples/src"),
+    static: [
+      {
+        directory: path.resolve(__dirname, "examples/src"),
+        watch: true
+      }
+    ],
     host: "0.0.0.0",
     port: 8001,
   },
