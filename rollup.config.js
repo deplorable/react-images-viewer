@@ -20,12 +20,13 @@ const external = Object.keys(globals)
 const babelOptions = (production) => {
   let result = {
     babelrc: false,
-    presets: ['@babel/preset-react', ['@babel/preset-env', { modules: false }]],
-    plugins: [['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }], '@babel/plugin-external-helpers']
+    babelHelpers: 'bundled',
+    presets: ['@babel/preset-react', ['@babel/preset-env', { modules: false }]]
+    //plugins: [['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }], ['@babel/plugin-external-helpers']]
   }
-  if (production) {
+  /*if (production) {
     result.plugins.push('transform-react-remove-prop-types')
-  }
+  }*/
   return result
 }
 
