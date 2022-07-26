@@ -65,7 +65,7 @@ module.exports = {
       cacheGroups: {
         common: {
           test: /[\\/]node_modules[\\/]/,
-          name: "common",
+          //name: "common",
           chunks: "all",
         },
       },
