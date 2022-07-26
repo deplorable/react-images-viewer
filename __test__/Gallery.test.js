@@ -1,6 +1,6 @@
 import React from 'react'
+import {render,screen} from '@testing-library/react';
 import ImgsViewer from '../src/ImgsViewer'
-import { mount } from 'enzyme'
 
 const props1 = {
   onClose: () => {},

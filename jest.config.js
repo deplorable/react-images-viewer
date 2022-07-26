@@ -2,7 +2,7 @@ module.exports = {
   verbose: true,
   collectCoverage: true,
   collectCoverageFrom: ['src/*.{js, jsx}'],
-  setupFiles: ['./__test__/rafShim.js', './__test__/jestsetup.js'],
+  setupFiles: ['./__test__/rafShim.js'],
   testURL: 'http://localhost/',
   // moduleFileExtensions: [
   //   'js',

@@ -1,17 +1,20 @@
-export function deepMerge(source, target = {}) {
-  const extended = Object.assign({}, target);
+export function deepMerge(sourceA = {}, sourceB = {}) {
+  let extended = Object.assign({}, sourceA);
 
-  Object.keys(source).forEach((key) => {
-    if (typeof source[key] !== "object" || !source[key]) {
-      extended[key] = source[key];
+  Object.keys(sourceB).forEach((key) => {
+console.log("SOURCEA= "+ JSON.stringify(sourceA) + " SOURCEB= "+JSON.stringify(sourceB));
+console.log("sourceB key is " +JSON.stringify(key)+ '; sourceB[key] = ' + JSON.stringify(sourceB[key]));
+    if (typeof sourceB[key] !== "object" || !sourceB[key]) {
+      extended[key] = sourceB[key];
     } else {
-      if (!target[key]) {
-        extended[key] = source[key];
+      if (!sourceB[key]) {
+        extended[key] = sourceB[key];
       } else {
-        extended[key] = deepMerge(target[key], source[key]);
+        extended[key] = deepMerge(sourceA[key], sourceB[key]);
       }
     }
   });
+  console.log("RESULT="+JSON.stringify(extended));
   return extended;
 }
 // export function deepMerge(source, target = {}) {
