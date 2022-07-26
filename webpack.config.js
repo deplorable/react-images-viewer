@@ -35,7 +35,7 @@ module.exports = {
         use: [
           {
             loader: "babel-loader",
-            options: { presets: ["react", "env"] },
+            options: { presets: ["@babel/preset-react", "@babel/preset-env"] },
           },
         ],
       },
@@ -60,7 +60,6 @@ module.exports = {
   },
   optimization: {
     splitChunks: {
-      name: true,
       // filename: 'common.js',
       // minChunks: 2,
       cacheGroups: {

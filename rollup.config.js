@@ -20,8 +20,8 @@ const external = Object.keys(globals)
 const babelOptions = (production) => {
   let result = {
     babelrc: false,
-    presets: ['react', ['env', { modules: false }]],
-    plugins: [['transform-object-rest-spread', { useBuiltIns: true }], 'transform-object-rest-spread', 'external-helpers']
+    presets: ['@babel/preset-react', ['@babel/preset-env', { modules: false }]],
+    plugins: [['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }], '@babel/plugin-external-helpers']
   }
   if (production) {
     result.plugins.push('transform-react-remove-prop-types')
