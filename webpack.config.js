@@ -6,8 +6,8 @@ module.exports = {
   mode: "development",
   context: path.resolve(__dirname, "examples/src"),
   entry: {
-    app: "./app.js",
-    app_CN: "./app_CN.js",
+    app: "app.js",
+    app_CN: "app_CN.js",
     common: ["react-images-viewer"],
   },
   output: {
@@ -20,7 +20,7 @@ module.exports = {
     //contentBase: path.resolve(__dirname, "examples/src"),
     static: [
       {
-        directory: path.resolve(__dirname, "examples/src"),
+        directory: path.resolve(__dirname, "examples/dist"),
         watch: true
       }
     ],
@@ -35,7 +35,6 @@ module.exports = {
         use: [
           {
             loader: "babel-loader",
-            options: { presets: ["@babel/preset-react", "@babel/preset-env"] },
           },
         ],
       },
@@ -47,31 +46,46 @@ module.exports = {
         test: /\.html$/,
         use: [
           {
-            loader: "html-loader",
+            loader: "html-loader"
           },
         ],
       },
     ],
   },
   resolve: {
+    roots: [
+      __dirname,
+      path.resolve(__dirname, "examples/src"),
+      path.resolve(__dirname, "examples/dist"),
+    ],
     alias: {
       "react-images-viewer": path.resolve(__dirname, "src/ImgsViewer"),
+      "app.js": path.resolve(__dirname, "examples/src/app"),
+      "app_CN.js": path.resolve(__dirname, "examples/src/app"),
+      "common": path.resolve(__dirname, "examples/dist/common")
     },
+    //extensions: ['.js']
   },
   optimization: {
+    //chunkIds: 'named',
     splitChunks: {
-      // filename: 'common.js',
+      //filename: 'common.js',
       // minChunks: 2,
-      cacheGroups: {
+      /*cacheGroups: {
         common: {
           test: /[\\/]node_modules[\\/]/,
-          //name: "common",
-          chunks: "all",
+          //idHint: "common",
+          chunks: "all"
         },
-      },
+      },*/
     },
   },
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: "example.css",
+      chunkFilename: "example.css",
+      ignoreOrder: false,
+    }),
     new HtmlWebpackPlugin({
       filename: "index.html",
       inject: false,
@@ -81,10 +95,6 @@ module.exports = {
       filename: "index_CN.html",
       inject: false,
       template: path.resolve(__dirname, "examples/src/index_CN.html"),
-    }),
-    new MiniCssExtractPlugin({
-      filename: "example.css",
-      chunkFilename: "example.css",
-    }),
+    })
   ],
 };

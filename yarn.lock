@@ -3802,6 +3802,14 @@
   dependencies:
     "flat-cache" "^3.0.4"
 
+"file-loader@^6.2.0":
+  "integrity" "sha512-qo3glqyTa61Ytg4u73GultjHGjdRyig3tG6lPtyX/jOEJvHif9uB0/OCI2Kif6ctF3caQTW2G5gym21oAsI4pw=="
+  "resolved" "https://registry.npmjs.org/file-loader/-/file-loader-6.2.0.tgz"
+  "version" "6.2.0"
+  dependencies:
+    "loader-utils" "^2.0.0"
+    "schema-utils" "^3.0.0"
+
 "file-type@^3.6.0":
   "integrity" "sha512-RLoqTXE8/vPmMuTI88DAzhMYC99I8BWv7zYP4A1puo5HIjEJ5EX48ighy4ZyKMG9EDXxBgW6e++cn7d1xuFghA=="
   "resolved" "https://registry.npmjs.org/file-type/-/file-type-3.9.0.tgz"
@@ -5505,12 +5513,7 @@
   "resolved" "https://registry.npmjs.org/json5/-/json5-0.5.1.tgz"
   "version" "0.5.1"
 
-"json5@^2.1.2":
-  "integrity" "sha512-1hqLFMSrGHRHxav9q9gNjJ5EXznIxGVO09xQRrwplcS8qs28pZ8s8hupZAmqDwZUmVZ2Qb2jnyPOWcDH8m8dlA=="
-  "resolved" "https://registry.npmjs.org/json5/-/json5-2.2.1.tgz"
-  "version" "2.2.1"
-
-"json5@^2.2.1":
+"json5@^2.1.2", "json5@^2.2.1":
   "integrity" "sha512-1hqLFMSrGHRHxav9q9gNjJ5EXznIxGVO09xQRrwplcS8qs28pZ8s8hupZAmqDwZUmVZ2Qb2jnyPOWcDH8m8dlA=="
   "resolved" "https://registry.npmjs.org/json5/-/json5-2.2.1.tgz"
   "version" "2.2.1"

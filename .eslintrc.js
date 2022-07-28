@@ -24,7 +24,7 @@ module.exports = {
   ],
   // required to lint *.vue files
   plugins: [
-    'react',
+    '@babel/preset-react',
   ],
   // check if imports actually resolve
   settings: {
