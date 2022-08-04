@@ -22,16 +22,18 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
+    'plugin:react/jsx-runtime'
   ],
+  plugins: ['react'],
   // required to lint *.vue files
   // check if imports actually resolve
-  /*settings: {
+  settings: {
     react: {
       createClass: 'createReactClass',
       pragma: 'React',
-      version: '16.4.1'
+      version: 'detect'
     },
-  },*/
+  },
   rules: {
     'no-unused-vars': 0,
     // allow debugger during development
@@ -39,5 +41,7 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 2 : 0,
     "no-unused-vars": [2, { "vars": "all", "args": "after-used" }],
     'global-require': 0,
+    "react/jsx-uses-react": "error",   
+    "react/jsx-uses-vars": "error" 
   }
 }
