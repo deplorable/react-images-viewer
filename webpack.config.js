@@ -6,9 +6,9 @@ module.exports = {
   mode: "development",
   context: path.resolve(__dirname, "examples/src"),
   entry: {
-    app: "app.js",
-    app_CN: "app_CN.js",
-    bundle: ["react-images-viewer.js"]
+    app: "./app.js",
+    app_CN: "./app_CN.js",
+    common: ["react-images-viewer"]
   },
   output: {
     path: path.resolve(__dirname, "examples/dist"),
@@ -20,12 +20,12 @@ module.exports = {
     //contentBase: path.resolve(__dirname, "examples/src"),
     static: [
       {
-        directory: path.resolve(__dirname, "examples/dist"),
+        directory: path.resolve(__dirname, "examples/src"),
         watch: true
-      }
+      },
     ],
     host: "0.0.0.0",
-    port: 8001,
+    port: 8002,
   },
   module: {
     rules: [
@@ -54,40 +54,38 @@ module.exports = {
     ],
   },
   resolve: {
-    roots: [
+    extensions: ['.js', '.json', '.wasm', '.mjs', '.css'],
+    /*roots: [
       __dirname,
       path.resolve(__dirname, "examples/src"),
       path.resolve(__dirname, "examples/dist"),
       path.resolve(__dirname, "dist"),
       "dist",
-    ],
+    ],*/
     alias: {
       "react-images-viewer": path.resolve(__dirname, "src/ImgsViewer"),
-      "app.js": path.resolve(__dirname, "examples/src/app"),
-      "app_CN.js": path.resolve(__dirname, "examples/src/app"),
+      //"common": path.resolve(__dirname, "examples/src/dist")
+      /*"app.js": path.resolve(__dirname, "examples/src/app"),
+      "app_CN.js": path.resolve(__dirname, "examples/src/app"),*/
     },
     //extensions: ['.js']
   },
   optimization: {
     chunkIds: 'named',
     splitChunks: {
-      //filename: 'common.js',
+      //chunks: "all",
+      //name: "common",
+      //filename: 'common.js'
       // minChunks: 2,
       cacheGroups: {
-        bundle: {
+        common: {
           test: /[\\/]node_modules[\\/]/,
-          idHint: "bundle",
           chunks: "all"
         },
       },
     },
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: "example.css",
-      chunkFilename: "example.css",
-      ignoreOrder: false,
-    }),
     new HtmlWebpackPlugin({
       filename: "index.html",
       inject: false,
@@ -97,6 +95,11 @@ module.exports = {
       filename: "index_CN.html",
       inject: false,
       template: path.resolve(__dirname, "examples/src/index_CN.html"),
+    }),
+    new MiniCssExtractPlugin({
+      filename: "example.css",
+      chunkFilename: "example.css",
+      ignoreOrder: false,
     })
   ],
 };

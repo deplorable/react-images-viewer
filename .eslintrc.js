@@ -27,13 +27,13 @@ module.exports = {
     '@babel/preset-react',
   ],
   // check if imports actually resolve
-  settings: {
+  /*settings: {
     react: {
       createClass: 'createReactClass',
       pragma: 'React',
       version: '16.4.1'
     },
-  },
+  },*/
   rules: {
     'no-unused-vars': 0,
     // allow debugger during development
