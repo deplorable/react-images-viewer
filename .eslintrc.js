@@ -7,9 +7,10 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
-  },
-  parserOptions: {
-    sourceType: 'module'
+    sourceType: 'module',
+    babelOptions: {
+      presets: ['@babel/preset-react']
+    },
   },
   env: {
     node: true,
@@ -23,9 +24,6 @@ module.exports = {
     'plugin:react/recommended',
   ],
   // required to lint *.vue files
-  plugins: [
-    '@babel/preset-react',
-  ],
   // check if imports actually resolve
   /*settings: {
     react: {
