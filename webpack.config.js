@@ -90,11 +90,13 @@ module.exports = {
       filename: "index.html",
       inject: false,
       template: path.resolve(__dirname, "examples/src/index.html"),
+      publicPath: "/"
     }),
     new HtmlWebpackPlugin({
       filename: "index_CN.html",
       inject: false,
       template: path.resolve(__dirname, "examples/src/index_CN.html"),
+      publicPath: "/"
     }),
     new MiniCssExtractPlugin({
       filename: "example.css",
