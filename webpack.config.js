@@ -8,7 +8,7 @@ module.exports = {
   entry: {
     app: "app.js",
     app_CN: "app_CN.js",
-    common: ["react-images-viewer"],
+    bundle: ["react-images-viewer.js"]
   },
   output: {
     path: path.resolve(__dirname, "examples/dist"),
@@ -30,15 +30,6 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
-        exclude: [/node_modules/],
-        use: [
-          {
-            loader: "babel-loader",
-          },
-        ],
-      },
-      {
         test: /\.less$/,
         use: [MiniCssExtractPlugin.loader, "css-loader", "less-loader"],
       },
@@ -50,6 +41,16 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.js$/,
+        exclude: [/node_modules/],
+        use: [
+          {
+            loader: "babel-loader",
+            options: { presets: ["@babel/preset-react", "@babel/preset-env"] },
+          },
+        ],
+      },
     ],
   },
   resolve: {
@@ -57,27 +58,28 @@ module.exports = {
       __dirname,
       path.resolve(__dirname, "examples/src"),
       path.resolve(__dirname, "examples/dist"),
+      path.resolve(__dirname, "dist"),
+      "dist",
     ],
     alias: {
       "react-images-viewer": path.resolve(__dirname, "src/ImgsViewer"),
       "app.js": path.resolve(__dirname, "examples/src/app"),
       "app_CN.js": path.resolve(__dirname, "examples/src/app"),
-      "common": path.resolve(__dirname, "examples/dist/common")
     },
     //extensions: ['.js']
   },
   optimization: {
-    //chunkIds: 'named',
+    chunkIds: 'named',
     splitChunks: {
       //filename: 'common.js',
       // minChunks: 2,
-      /*cacheGroups: {
-        common: {
+      cacheGroups: {
+        bundle: {
           test: /[\\/]node_modules[\\/]/,
-          //idHint: "common",
+          idHint: "bundle",
           chunks: "all"
         },
-      },*/
+      },
     },
   },
   plugins: [
