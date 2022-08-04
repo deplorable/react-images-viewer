@@ -8,7 +8,7 @@ module.exports = {
   entry: {
     app: "./app.js",
     app_CN: "./app_CN.js",
-    common: ["react-images-viewer"]
+    common: "./common.js" //["react-images-viewer"]
   },
   output: {
     path: path.resolve(__dirname, "examples/dist"),
