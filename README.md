@@ -14,18 +14,18 @@ A react library that view photos list easily, and a simple, responsive viewer co
 
 ```bash
 # recommended
-yarn add react-images-viewer
+yarn add @deplorable/react-images-viewer
 ```
 
 or
 
 ```bash
-npm install react-images-viewer --save
+npm install @deplorable/react-images-viewer --save
 ```
 
 ```jsx
 import React from "react";
-import ImgsViewer from "react-images-viewer";
+import ImgsViewer from "@deplorable/react-images-viewer";
 
 export default class Demo extends React.Component {
   render() {

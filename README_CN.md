@@ -14,18 +14,18 @@
 
 ```bash
 # 推荐
-yarn add react-images-viewer
+yarn add @deplorable/react-images-viewer
 ```
 
 or
 
 ```bash
-npm install react-images-viewer --save
+npm install @deplorable/react-images-viewer --save
 ```
 
 ```jsx
 import React from "react";
-import ImgsViewer from "react-images-viewer";
+import ImgsViewer from "@deplorable/react-images-viewer";
 
 export default class Demo extends React.Component {
   render() {
