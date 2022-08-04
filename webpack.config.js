@@ -31,8 +31,22 @@ module.exports = {
     rules: [
       {
         test: /\.less$/,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "less-loader"],
+        use: ["style-loader", "css-loader", 
+        { loader: "less-loader", options: {
+            implementation: require("less"),
+        }}],
       },
+      /*{
+        test: /\.css$/,
+        use: ["style-loader", {
+          loader: "css-loader",
+          options: {
+            modules: {
+              localIdentContext: path.resolve(__dirname, 'examples/dist'),
+            },
+          },
+        }],
+      },*/
       {
         test: /\.html$/,
         use: [
@@ -88,13 +102,13 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       filename: "index.html",
-      inject: false,
+      //inject: false,
       template: path.resolve(__dirname, "examples/src/index.html"),
       publicPath: "/"
     }),
     new HtmlWebpackPlugin({
       filename: "index_CN.html",
-      inject: false,
+      //inject: false,
       template: path.resolve(__dirname, "examples/src/index_CN.html"),
       publicPath: "/"
     }),
