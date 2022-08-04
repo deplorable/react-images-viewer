@@ -7,7 +7,7 @@
   "scripts": {
     "build": "nps build",
     "publish:examples": "NODE_ENV=production nps publish",
-    "start": "webpack-dev-server --progress",
+    "start": "webpack-dev-server --progress --stats-children",
     "make": "webpack --progress",
     "lint": "eslint src/** examples/src/app.js examples/src/components/Gallery.js",
     "test": "jest",

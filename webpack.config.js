@@ -54,7 +54,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.json', '.wasm', '.mjs', '.css'],
+    extensions: ['.js', '.json', '.wasm', '.mjs', '.css', '.less'],
     /*roots: [
       __dirname,
       path.resolve(__dirname, "examples/src"),
@@ -99,6 +99,7 @@ module.exports = {
       publicPath: "/"
     }),
     new MiniCssExtractPlugin({
+      runtime: true,
       filename: "example.css",
       chunkFilename: "example.css",
       ignoreOrder: false,
