@@ -3,7 +3,10 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: ['src/*.{js, jsx}'],
   setupFiles: ['./__test__/rafShim.js'],
-  testURL: 'http://localhost/',
+  testEnvironmentOptions: {
+    url: 'http://localhost/',
+    //testURL: 'http://localhost/',
+  }
   // moduleFileExtensions: [
   //   'js',
   //   'jsx',
