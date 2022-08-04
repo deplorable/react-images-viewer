@@ -17,7 +17,6 @@ module.exports = {
   },
   devtool: "inline-source-map",
   devServer: {
-    //contentBase: path.resolve(__dirname, "examples/src"),
     static: [
       {
         directory: path.resolve(__dirname, "examples/src"),
@@ -36,17 +35,6 @@ module.exports = {
             implementation: require("less"),
         }}],
       },
-      /*{
-        test: /\.css$/,
-        use: ["style-loader", {
-          loader: "css-loader",
-          options: {
-            modules: {
-              localIdentContext: path.resolve(__dirname, 'examples/dist'),
-            },
-          },
-        }],
-      },*/
       {
         test: /\.html$/,
         use: [
@@ -69,20 +57,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.json', '.wasm', '.mjs', '.css', '.less'],
-    /*roots: [
-      __dirname,
-      path.resolve(__dirname, "examples/src"),
-      path.resolve(__dirname, "examples/dist"),
-      path.resolve(__dirname, "dist"),
-      "dist",
-    ],*/
     alias: {
-      "react-images-viewer": path.resolve(__dirname, "src/ImgsViewer"),
-      //"common": path.resolve(__dirname, "examples/src/dist")
-      /*"app.js": path.resolve(__dirname, "examples/src/app"),
-      "app_CN.js": path.resolve(__dirname, "examples/src/app"),*/
+      "react-images-viewer": path.resolve(__dirname, "src/ImgsViewer")
     },
-    //extensions: ['.js']
   },
   optimization: {
     chunkIds: 'named',
@@ -90,7 +67,7 @@ module.exports = {
       //chunks: "all",
       //name: "common",
       //filename: 'common.js'
-      // minChunks: 2,
+      //minChunks: 2,
       cacheGroups: {
         common: {
           test: /[\\/]node_modules[\\/]/,
