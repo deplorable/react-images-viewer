@@ -1,4 +1,4 @@
-# react-images-viewer
+# @deplorable/react-images-viewer
 
 <!-- [![Build Status](https://travis-ci.org/guonanci/react-images-viewer.svg?branch=master)](https://travis-ci.org/guonanci/react-images-viewer) -->
 
