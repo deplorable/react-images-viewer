@@ -397,6 +397,7 @@ ImgsViewer.propTypes = {
   imgCountSeparator: PropTypes.string,
   imgs: PropTypes.arrayOf(
     PropTypes.shape({
+      alt: PropTypes.string,
       src: PropTypes.string.isRequired,
       srcSet: PropTypes.oneOfType([PropTypes.array, PropTypes.string]),
       caption: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
