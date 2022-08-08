@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for your interest in react-images-viewer. All forms fo contribution ares welcome, from issue reports to PRs and documentation / write-ups.
+Thanks for your interest in react-images-viewer. All forms of contribution ares welcome, from issue reports to PRs and documentation / write-ups.
 
 Before you open a PR:
 
