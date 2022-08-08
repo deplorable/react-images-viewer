@@ -5,10 +5,11 @@ function deepMerge(sourceA = {}, sourceB = {}) {
   let extended = Object.assign({}, sourceA);
 
   Object.keys(sourceB).forEach((key) => {
-console.log("SOURCEA= "+ JSON.stringify(sourceA) + " SOURCEB= "+JSON.stringify(sourceB));
-console.log("sourceB key is " +JSON.stringify(key)+ '; sourceB[key] = ' + JSON.stringify(sourceB[key]));
+    //console.log("SOURCEA= "+ JSON.stringify(sourceA) + " SOURCEB= "+JSON.stringify(sourceB));
+    //console.log("sourceB key is " +JSON.stringify(key)+ '; sourceB[key] = ' + JSON.stringify(sourceB[key]));
     if (Array.isArray(sourceB[key])) {
-      extended[key] = [ ...(sourceB[key]) ];
+      if (typeof sourceA[key] === 'undefined') extended[key] = [ ...(sourceB[key]) ]
+      else extended[key] = { ...(sourceB[key]) };
     } else if (typeof sourceB[key] !== "object" || !sourceB[key]) {
       extended[key] = sourceB[key];
     } else {
@@ -19,7 +20,7 @@ console.log("sourceB key is " +JSON.stringify(key)+ '; sourceB[key] = ' + JSON.s
       }
     }
   });
-  console.log("RESULT="+JSON.stringify(extended));
+  //console.log("RESULT="+JSON.stringify(extended));
   return extended;
 }
 
