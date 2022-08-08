@@ -1,6 +1,6 @@
 # react-images-viewer
 
-[![Build Status](https://travis-ci.org/guonanci/react-images-viewer.svg?branch=master)](https://travis-ci.org/guonanci/react-images-viewer)
+<!-- [![Build Status](https://travis-ci.org/guonanci/react-images-viewer.svg?branch=master)](https://travis-ci.org/guonanci/react-images-viewer) -->
 
 <!-- [![Coverage Status](https://coveralls.io/repos/github/guonanci/react-images-viewer/badge.svg?branch=master)](https://coveralls.io/github/guonanci/react-images-viewer?branch=master) -->
 
@@ -48,7 +48,7 @@ export default class Demo extends React.Component {
 
 ## 例子
 
-线上案例: [guonanci.github.io/react-images-viewer](https://guonanci.github.io/react-images-viewer)
+线上案例: [deplorable.github.io/react-images-viewer](https://deplorable.github.io/react-images-viewer)
 
 ```bash
 yarn install
