@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { Component, Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { StyleSheet, css } from "aphrodite";
 import ScrollLock from "react-scrolllock";
 
@@ -12,7 +12,7 @@ import PaginatedThumbnails from "./components/PaginatedThumbnails";
 import Portal from "./components/Portal";
 import DefaultSpinner from "./components/Spinner";
 
-import { bindFunctions, canUseDom, deepMerge } from "./utils/util";
+import { /*bindFunctions,*/ canUseDom, deepMerge } from "./utils/util";
 
 function normalizeSourceSet(data) {
   const sourceSet = data.srcSet || data.srcset;
@@ -26,46 +26,104 @@ function normalizeSourceSet(data) {
 
 const ThemeContext = React.createContext({
   theme: defaultTheme,
-  toggleTheme: (newTheme) => {},
+  toggleTheme: (newTheme) => {
+    return newTheme;
+  },
 });
 
-class ImgsViewer extends Component {
-  constructor(props) {
-    super(props);
+let ImgsViewer = (props) => {
+  const mergedTheme = deepMerge(defaultTheme, props.theme);
 
-    this.theme = deepMerge(defaultTheme, this.props.theme);
-    this.classes = StyleSheet.create(
-      deepMerge(defaultStyles, this.props.theme)
-    );
-    this.toggleTheme = (theme) => {
-      this.setState(() => ({ theme }));
-    };
-    this.state = {
-      imgLoaded: false,
-      theme: this.theme,
-      toggleTheme: this.toggleTheme,
-    };
+  const classes = StyleSheet.create(
+    deepMerge(defaultStyles, props.theme)
+  );
 
-    bindFunctions.call(this, [
-      "gotoNext",
-      "gotoPrev",
-      "closeBackdrop",
-      "handleKeyboardInput",
-      "handleImgLoaded",
-    ]);
-  }
-  componentDidMount() {
-    if (this.props.isOpen) {
-      if (this.props.enableKeyboardInput) {
-        window.addEventListener("keydown", this.handleKeyboardInput);
+  const doToggleTheme = (theme) => {
+    setToggleTheme(theme);
+  };
+
+  const [ imgLoaded, setImgLoaded] = useState(false);
+  const [ theme, setTheme ] = useState(mergedTheme);
+  const [ toggleTheme, setToggleTheme ] = useState(doToggleTheme);    
+  const [ isOpen, setIsOpen ] = useState(props.isOpen);
+  const [ currImg, setCurrImg ] = useState(props.currImg);
+  const [ enableKeyboardInput, setEnableKeyboardInput ] = useState(props.enableKeyboardInput);
+
+  /*bindFunctions.call(this, [
+    "gotoNext",
+    "gotoPrev",
+    "closeBackdrop",
+    "handleKeyboardInput",
+    "handleImgLoaded",
+  ]);*/
+  
+  useEffect(() => {
+    if (isOpen) {
+      if (enableKeyboardInput) {
+        window.addEventListener("keydown", handleKeyboardInput);
       }
-      if (typeof this.props.currImg === "number") {
-        this.preloadImg(this.props.currImg, this.handleImgLoaded);
+      if (typeof props.currImg === "number") {
+        preloadImg(props.currImg, handleImgLoaded);
       }
     }
+  }, []);
+
+  let cleanupFunction = () => {
+    if (enableKeyboardInput) {
+      window.removeEventListener("keydown", handleKeyboardInput);
+    }
   }
+
+  useEffect(() => {
+    if (!canUseDom) return cleanupFunction;
+
+    // const instance = this
+
+    // always to preload imgs with both directions
+    // then when user changs direction, img also show quickly
+    if (props.preloadNextImg) {
+      const nextIdx = props.currImg + 1;
+      const prevIdx = props.currImg - 1;
+      // debugger
+      // if (!this) return null
+      preloadImg(prevIdx);
+      preloadImg(nextIdx);
+    }
+    // preload currImg
+    if (
+      currImg !== props.currImg ||
+      (!isOpen && props.isOpen)
+    ) {
+      const img = preloadImgData(
+        props.imgs[props.currImg],
+        handleImgLoaded
+      );
+      if (img) setImgLoaded(img.complete);
+    }
+
+    // add/remove event listeners
+    if (
+      !isOpen &&
+      props.isOpen &&
+      props.enableKeyboardInput
+    ) {
+      window.addEventListener("keydown", handleKeyboardInput);
+    }
+    if (!props.isOpen && props.enableKeyboardInput) {
+      window.removeEventListener("keydown", handleKeyboardInput);
+    }
+
+    // update local state
+    if (props.isOpen !== isOpen) setIsOpen(props.isOpen);
+    if (props.currImg !== currImg) setCurrImg(props.currImg);
+    if (props.enableKeyboardInput !== enableKeyboardInput) setEnableKeyboardInput(props.enableKeyboardInput);
+
+    return cleanupFunction;
+  }, [props.currImg, props.isOpen, props.enableKeyboardInput, props.preloadNextImg]);
+
+
   // static getDerivedStateFromProps (nextProps, prevState) {
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  /*const UNSAFE_componentWillReceiveProps = (nextProps) => {
     if (!canUseDom) return;
 
     // const instance = this
@@ -108,21 +166,23 @@ class ImgsViewer extends Component {
     }
 
     return null;
-  }
-  componentWillUnmount() {
+  }*/
+
+  /*componentWillUnmount() {
     if (this.props.enableKeyboardInput) {
       window.removeEventListener("keydown", this.handleKeyboardInput);
     }
-  }
+  }*/
 
   // ====================
   // Methods
   // ====================
 
-  preloadImg(idx, onload) {
-    return this.preloadImgData(this.props.imgs[idx], onload);
-  }
-  preloadImgData(data, onload) {
+  const preloadImg = (idx, onload) => {
+    return preloadImgData(props.imgs[idx], onload);
+  };
+
+  const preloadImgData = (data, onload) => {
     if (!data) return;
 
     const img = new Image();
@@ -136,10 +196,10 @@ class ImgsViewer extends Component {
     if (sourceSet) img.srcset = sourceSet;
 
     return img;
-  }
-  gotoNext(event) {
-    const { currImg, imgs } = this.props;
-    const { imgLoaded } = this.state;
+  };
+
+  const gotoNext = (event) => {
+    const { currImg, imgs } = props;
 
     if (!imgLoaded || currImg === imgs.length - 1) return;
 
@@ -148,11 +208,11 @@ class ImgsViewer extends Component {
       event.stopPropagation();
     }
 
-    this.props.onClickNext();
-  }
-  gotoPrev(event) {
-    const { currImg } = this.props;
-    const { imgLoaded } = this.state;
+    props.onClickNext();
+  };
+
+  const gotoPrev = (event) => {
+    const { currImg } = props;
 
     if (!imgLoaded || currImg === 0) return;
 
@@ -161,76 +221,76 @@ class ImgsViewer extends Component {
       event.stopPropagation();
     }
 
-    this.props.onClickPrev();
-  }
-  closeBackdrop(event) {
+    props.onClickPrev();
+  };
+
+  const closeBackdrop = (event) => {
     if (
       event.target.id === "viewerBackdrop" ||
       event.target.tagName === "FIGURE"
     ) {
-      this.props.onClose();
+      props.onClose();
     }
-  }
-  handleKeyboardInput(event) {
+  };
+
+  const handleKeyboardInput = (event) => {
     const { keyCode } = event;
     if (keyCode === 37 || keyCode === 33 || keyCode === 38) {
       // left, pageup, up
-      this.gotoPrev(event);
+      gotoPrev(event);
       return true;
     } else if (keyCode === 39 || keyCode === 34 || keyCode === 40) {
       // right, pagedown, down
-      this.gotoNext(event);
+      gotoNext(event);
       return true;
     } else if (keyCode === 27 || keyCode === 32) {
       // esc, space
-      this.props.onClose();
+      props.onClose();
       return true;
     }
     return false;
   }
-  handleImgLoaded() {
-    this.setState({
-      imgLoaded: true,
-    });
+
+  const handleImgLoaded = () => {
+    setImgLoaded(true);
   }
 
   // ====================
   // Renderers
   // ====================
 
-  renderArrowPrev(theme) {
-    if (this.props.currImg === 0) return null;
+  const renderArrowPrev = (theme) => {
+    if (props.currImg === 0) return null;
 
     return (
       <Arrow
         theme={theme}
         direction="left"
         icon="arrowLeft"
-        onClick={this.gotoPrev}
-        title={this.props.leftArrowTitle}
+        onClick={gotoPrev}
+        title={props.leftArrowTitle}
         type="button"
       />
     );
-  }
-  renderArrowNext(theme) {
-    if (this.props.currImg === this.props.imgs.length - 1) return null;
+  };
+
+  const renderArrowNext = (theme) => {
+    if (props.currImg === props.imgs.length - 1) return null;
 
     return (
       <Arrow
         theme={theme}
         direction="right"
         icon="arrowRight"
-        onClick={this.gotoNext}
-        title={this.props.rightArrowTitle}
+        onClick={gotoNext}
+        title={props.rightArrowTitle}
         type="button"
       />
     );
-  }
-  renderDialog(newState) {
-    const { backdropCloseable, isOpen, showThumbnails, width } = this.props;
+  };
 
-    const { imgLoaded } = this.state;
-
+  const renderDialog = (newState) => {
+    const { backdropCloseable, isOpen, showThumbnails, width } = props;
     if (!isOpen) return <span key="closed" />;
 
     const offsetThumbnails = showThumbnails
@@ -245,37 +305,35 @@ class ImgsViewer extends Component {
             <Container
               theme={theme}
               key="open"
-              onClick={backdropCloseable && this.closeBackdrop}
-              onTouchEnd={backdropCloseable && this.closeBackdrop}
+              onClick={backdropCloseable && closeBackdrop}
+              onTouchEnd={backdropCloseable && closeBackdrop}
             >
               <Fragment>
                 <div
-                  className={css(this.classes.content)}
+                  className={css(classes.content)}
                   style={{
                     marginBottom: offsetThumbnails,
                     maxWidth: width,
                   }}
                 >
-                  {imgLoaded && this.renderHeader(theme)}{" "}
-                  {this.renderImgs(theme)}
-                  {this.renderSpinner()} {imgLoaded && this.renderFooter(theme)}
+                  {imgLoaded && renderHeader(theme)}{" "}
+                  {renderImgs(theme)}
+                  {renderSpinner()} {imgLoaded && renderFooter(theme)}
                 </div>
-                {imgLoaded && this.renderThumbnails(theme)}
-                {imgLoaded && this.renderArrowPrev(theme)}
-                {imgLoaded && this.renderArrowNext(theme)}
-                {this.props.preventScroll && <ScrollLock />}
+                {imgLoaded && renderThumbnails(theme)}
+                {imgLoaded && renderArrowPrev(theme)}
+                {imgLoaded && renderArrowNext(theme)}
+                {props.preventScroll && <ScrollLock />}
               </Fragment>
             </Container>
           );
         }}
       </ThemeContext.Consumer>
     );
-  }
-  renderImgs(theme) {
-    const { currImg, imgs, onClickImg, showThumbnails } = this.props;
+  };
 
-    const { imgLoaded } = this.state;
-
+  const renderImgs = (theme) => {
+    const { currImg, imgs, onClickImg, showThumbnails } = props;
     if (!imgs || !imgs.length) return null;
 
     const img = imgs[currImg];
@@ -291,9 +349,9 @@ class ImgsViewer extends Component {
     }px`;
 
     return (
-      <figure className={css(this.classes.figure)}>
+      <figure className={css(classes.figure)}>
         <img
-          className={css(this.classes.img, imgLoaded && this.classes.imgLoaded)}
+          className={css(classes.img, imgLoaded && classes.imgLoaded)}
           onClick={onClickImg}
           sizes={sizes}
           alt={img.alt}
@@ -306,8 +364,9 @@ class ImgsViewer extends Component {
         />
       </figure>
     );
-  }
-  renderThumbnails(theme) {
+  };
+
+  const renderThumbnails = (theme) => {
     const {
       imgs,
       currImg,
@@ -316,7 +375,7 @@ class ImgsViewer extends Component {
       onClickThumbnail,
       showThumbnails,
       thumbnailOffset,
-    } = this.props;
+    } = props;
 
     if (!showThumbnails) return null;
 
@@ -331,9 +390,10 @@ class ImgsViewer extends Component {
         onClickThumbnail={onClickThumbnail}
       />
     );
-  }
-  renderHeader(theme) {
-    const { closeBtnTitle, customControls, onClose, showCloseBtn } = this.props;
+  };
+
+  const renderHeader = (theme) => {
+    const { closeBtnTitle, customControls, onClose, showCloseBtn } = props;
 
     return (
       <Header
@@ -344,10 +404,10 @@ class ImgsViewer extends Component {
         closeBtnTitle={closeBtnTitle}
       />
     );
-  }
-  renderFooter(theme) {
-    const { currImg, imgs, imgCountSeparator, showImgCount } = this.props;
+  };
 
+  const renderFooter = (theme) => {
+    const { currImg, imgs, imgCountSeparator, showImgCount } = props;
     if (!imgs || !imgs.length) return null;
 
     return (
@@ -360,33 +420,37 @@ class ImgsViewer extends Component {
         showCount={showImgCount}
       />
     );
-  }
-  renderSpinner() {
-    const { spinner, spinnerDisabled, spinnerColor, spinnerSize } = this.props;
+  };
 
-    const { imgLoaded } = this.state;
+  const renderSpinner = () => {
+    const { spinner, spinnerDisabled, spinnerColor, spinnerSize } = props;
+    
     const Spinner = spinner;
     if (spinnerDisabled) return null;
     return (
       <div
         className={css(
-          this.classes.spinner,
-          !imgLoaded && this.classes.spinnerActive
+          classes.spinner,
+          !imgLoaded && classes.spinnerActive
         )}
       >
         <Spinner color={spinnerColor} size={spinnerSize} />
       </div>
     );
-  }
+  };
 
-  render() {
-    return (
-      <ThemeContext.Provider value={this.state}>
-        <Portal> {this.renderDialog(this.state)} </Portal>
-      </ThemeContext.Provider>
-    );
-  }
-}
+  let stateToPass = {
+    theme: theme,
+    toggleTheme: toggleTheme,
+    imgLoaded: imgLoaded
+  };
+
+  return (
+    <ThemeContext.Provider value={stateToPass}>
+      <Portal> {renderDialog(stateToPass)} </Portal>
+    </ThemeContext.Provider>
+  );
+};
 
 ImgsViewer.propTypes = {
   backdropCloseable: PropTypes.bool,
@@ -425,6 +489,7 @@ ImgsViewer.propTypes = {
   thumbnailOffset: PropTypes.number,
   width: PropTypes.number,
 };
+
 ImgsViewer.defaultProps = {
   currImg: 0,
   enableKeyboardInput: true,
